@@ -112,7 +112,7 @@ BTNode *btParent(BTree *tree, BTNode *n)
   return n->parent;
 }
 
-void *btGetData(BTree *tree, BTNode *n)
+void *btGetData(BTree *tree, BTNode *n) // avoir les donnes du noeud
 {
   (void)(tree);
   return n->data;
@@ -123,31 +123,32 @@ int btSize(BTree *tree)
   return tree->size;
 }
 
-int btIsRoot(BTree *tree, BTNode *n)
+int btIsRoot(BTree *tree, BTNode *n) 
 {
   (void)(tree);
   return (n->parent == NULL);
 }
 
-int btIsInternal(BTree *tree, BTNode *n)
+int btIsInternal(BTree *tree, BTNode *n) // indique si le noeud a des sous-arbres => est interne
 {
   (void)(tree);
   return (n->left != NULL || n->right != NULL);
 }
 
-int btIsExternal(BTree *tree, BTNode *n)
+int btIsExternal(BTree *tree, BTNode *n) // indique si le noeud est une feuille = pas de sous arbre 
 {
   (void)(tree);
   return (n->left == NULL && n->right == NULL);
 }
 
-int btHasLeft(BTree *tree, BTNode *n)
+int btHasLeft(BTree *tree, BTNode *n) // indique si le noeud a sous arbre gauche
+{
 {
   (void)(tree);
   return (n->left != NULL);
 }
 
-int btHasRight(BTree *tree, BTNode *n)
+int btHasRight(BTree *tree, BTNode *n) // indique si le noeud a sous arbre droit
 {
   (void)(tree);
   return (n->right != NULL);
@@ -155,11 +156,25 @@ int btHasRight(BTree *tree, BTNode *n)
 
 // Les fonctions ci-dessous sont a completer
 
+// applique f yux donnees stockees ds chacune des feuilles du sous arbre de tree dont n est racine
 void btMapLeaves(BTree *tree, BTNode *n, void (*f)(void *data, void *fparams), void *fparams)
 {
-
+  if(n == NULL){
+    return;
+  }
+  if (btIsExternal(tree, n)){ // si n est une feuille
+    f(btGetData(tree, n), fparams);
+    return;
+  } 
+  if(btIsInternal(tree, n)){ // si n est un noeud interne
+    f(btMapLeaves( tree, btLeft(tree, n), f, fparams)); // recursion sur le sous arbre gauche
+    f(btMapLeaves( tree, btRight(tree, n), f, fparams)); // idem sur le sous arbre droit
+    
+  }
+  
 }
 
+//modifie lefttree en lui donnant une nouvelle reacine avec data, leftree et right tree comme sous-arbre, right tree freed
 void btMergeTrees(BTree *lefttree, BTree *righttree, void *data)
 {
 
