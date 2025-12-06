@@ -7,4 +7,4 @@
 struct Hclust_t
 {
 };
-
+Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams);
