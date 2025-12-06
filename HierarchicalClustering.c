@@ -4,5 +4,7 @@
 #include "LinkedList.h"
 #include "BTree.h"
 
-typedef struct Hclust_t Hclust;
+struct Hclust_t
+{
+};
 
