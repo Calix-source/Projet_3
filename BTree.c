@@ -143,7 +143,6 @@ int btIsExternal(BTree *tree, BTNode *n) // indique si le noeud est une feuille 
 
 int btHasLeft(BTree *tree, BTNode *n) // indique si le noeud a sous arbre gauche
 {
-{
   (void)(tree);
   return (n->left != NULL);
 }
@@ -167,8 +166,8 @@ void btMapLeaves(BTree *tree, BTNode *n, void (*f)(void *data, void *fparams), v
     return;
   } 
   if(btIsInternal(tree, n)){ // si n est un noeud interne
-    f(btMapLeaves( tree, btLeft(tree, n), f, fparams)); // recursion sur le sous arbre gauche
-    f(btMapLeaves( tree, btRight(tree, n), f, fparams)); // idem sur le sous arbre droit
+    btMapLeaves( tree, btLeft(tree, n), f, fparams); // recursion sur le sous arbre gauche
+    btMapLeaves( tree, btRight(tree, n), f, fparams); // idem sur le sous arbre droit
     
   }
   
