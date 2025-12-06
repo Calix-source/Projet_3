@@ -3,6 +3,8 @@
 
 #include "LinkedList.h"
 #include "BTree.h"
+#include "LinkedList.c"
+#include "BTree.c"
 
 struct Hclust_t
 {
