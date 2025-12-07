@@ -14,16 +14,21 @@ struct Hclust_t
 Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams)
 {
   Node *current_node = llHead(objects);
-  while ( current_node!= NULL) 
-    {
-      
-    }
-  size_t initial_dict_size = 100; // on met une taille de tab aléatoire
+  size_t initial_dict_size = llLength(objects) * 2; // on ini une taille 
   Dict *dict = dictCreate(initial_dict_size); // on crée notre dictionnaire
-
   if (dict == NULL) // notre alloc échoue
   {
     return 0;
-  } 
+  }   
+  while ( current_node!= NULL) 
+    {
+      char *object = (char *)llData(current_node);
+      
+      BTree *T_o = btCreateLeaf(object); 
+      dictInsert(dict, object, T_o);
+      current_node = llNext(current_node);
+    }
+
+
 }
 
