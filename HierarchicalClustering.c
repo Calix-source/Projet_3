@@ -18,24 +18,12 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
     {
       
     }
-  typedef struct Node_t
-{
-    char *key;
-    void *value;
-    struct Node_t *next;
-} Node;
-  struct Dict_t
-{
-    Node **array;
-    size_t arraySize;
-    size_t nbKeys;
-};
-  // on ini le dictionnaire
-  Dict_t *dict = malloc(sizeof(Dict_t));
-  dict->arrraySize = ;       
-  dict->nbKeys = ;      
-  dict->array = malloc(dict->size * sizeof(void));
-  array->key= ;
-  array->value= ; 
+  size_t initial_dict_size = 100; // on met une taille de tab aléatoire
+  Dict *dict = dictCreate(initial_dict_size); // on crée notre dictionnaire
+
+  if (dict == NULL) // notre alloc échoue
+  {
+    return 0;
+  } 
 }
 
