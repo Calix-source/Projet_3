@@ -18,11 +18,17 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
     {
       
     }
+  struct Dict_t
+{
+    Node **array;
+    size_t arraySize;
+    size_t nbKeys;
+};
+  // on ini le dictionnaire
   Dict_t *dict = malloc(sizeof(Dict_t));
-  dict->size = 10;       // taille initiale, comme tu veux
-  dict->nKeys = 0;       // aucun élément au début
-
-  dict->keys = malloc(dict->size * sizeof(int));
-  dict->values = malloc(dict->size * sizeof(void*));
+  dict->arrraySize = ;       
+  dict->nbKeys = ;      
+  dict->array = malloc(dict->size * sizeof(Node));
+  
 }
 
