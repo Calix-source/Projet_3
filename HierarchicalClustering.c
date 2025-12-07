@@ -18,6 +18,12 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
     {
       
     }
+  typedef struct Node_t
+{
+    char *key;
+    void *value;
+    struct Node_t *next;
+} Node;
   struct Dict_t
 {
     Node **array;
@@ -28,7 +34,8 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
   Dict_t *dict = malloc(sizeof(Dict_t));
   dict->arrraySize = ;       
   dict->nbKeys = ;      
-  dict->array = malloc(dict->size * sizeof(Node));
-  
+  dict->array = malloc(dict->size * sizeof(void));
+  array->key= ;
+  array->value= ; 
 }
 
