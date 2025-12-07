@@ -13,6 +13,10 @@ struct Hclust_t
 };
 Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams)
 {
-  
+  Node *current_node = llHead(objects);
+  while ( current_node!= NULL) 
+    {
+      
+    }
 }
 
