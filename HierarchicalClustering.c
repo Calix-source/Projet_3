@@ -11,8 +11,16 @@ struct Hclust_t
   BTree *dendro_tree; //pointeur vers la rac de l'arbre 
   int nb_leaves; 
 };
+typedef struct 
+{
+  char *o; 
+  char *o'; 
+  double dist; 
+} Triple;
+
 Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams)
 {
+  Triple tab []; // ini le tableau qui contient nos o, o' et notre distance
   Node *current_node = llHead(objects);
   size_t initial_dict_size = llLength(objects) * 2; // on ini une taille 
   Dict *dict = dictCreate(initial_dict_size); // on crée notre dictionnaire
