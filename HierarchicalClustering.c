@@ -40,3 +40,40 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
 
 }
 
+void hclustFree(Hclust *hc){
+
+
+    return;
+}
+
+
+int hclustDepth(Hclust *hc) {
+
+    return;
+}
+
+int hclustNbLeaves(Hclust *hc) {
+
+    return;
+}
+
+void hclustPrintTree(FILE *fp, Hclust *hc)
+{
+
+    return;
+}
+
+List *hclustGetClustersDist(Hclust *hc, double distanceThreshold){
+
+    return;
+} 
+
+List *hclustGetClustersK(Hclust *hc, int k) {
+
+    return;
+}
+
+BTree *hclustGetTree(Hclust *hc) {
+
+    return;
+}
