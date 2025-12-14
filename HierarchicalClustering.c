@@ -13,12 +13,12 @@ struct Hclust_t
   BTree *dendro_tree; //pointeur vers la rac de l'arbre 
   int nb_leaves; 
 };
-typedef struct 
+struct PairDist_t
 {
   char *o1; 
   char *o2; 
   double dist; 
-} Triple;
+};
 
 Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams)
 {
