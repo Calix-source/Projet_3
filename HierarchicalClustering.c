@@ -54,19 +54,31 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
   List *distances = llCreateEmpty(); //pour stocker toutes les paires possibles
   Node *pointeur1 = llHead(objects);
   Node *pointeur2 = llNext(objects);
-  while (pointeur1!=taille)
+  while (pointeur1!=NULL)
   {
-    while ( pointeur2 != taille) 
+    const char *obj1 = (const char *)llData(pointeur1); // recup le nom de l'ojt 
+    Node *pointeur2 = llNext(objects);
+    
+    while ( pointeur2 != NULL) 
     {
+      const char *obj2 = (const char *)llData(pointeur2); // recup le nom de l'ojt
       PairDist_t *pair = malloc(sizeof(PairDist_t));
+      if(pair == NULL ) 
+      {
+        llFreeData(distances);
+        dictFree(dict); 
+        free(clust);
+        return NULL; 
+      } 
+      double dist = distFn(obj1, obj2, distFnParams);
       pair->o1 = obj1;
       pair->o2 = obj2; 
-      double dist = distFn(obj1, obj2, distFnParams);
       pair->distance = dist; 
+      
       llInsertLast(distances, pair);
-      pointeur2 ++; 
+      pointeur2 = llNext(pointeur2); //avance le pointeur
     }
-    pointeur1++;
+    pointeur1= llNext(pointeur1);
   }
   
   
