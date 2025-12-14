@@ -17,7 +17,7 @@ struct PairDist_t
 {
   char *o1; 
   char *o2; 
-  double dist; 
+  double distance; 
 };
 
 Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams)
@@ -57,7 +57,16 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
   while (pointeur1!=taille)
   {
     while ( pointeur2 != taille) 
-      
+    {
+      PairDist_t *pair = malloc(sizeof(PairDist_t));
+      pair->o1 = obj1;
+      pair->o2 = obj2; 
+      double dist = distFn(obj1, obj2, distFnParams);
+      pair->distance = dist; 
+      llInsertLast(distances, pair);
+      pointeur2 ++; 
+    }
+    pointeur1++;
   }
   
   
