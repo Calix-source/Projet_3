@@ -25,19 +25,21 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
   Hclust *clust = (Hclust *)malloc(sizeof(Hclust)); // alloc mémoire
   if (clust==NULL)
   {
-    free(clust); 
     return NULL; // si l'alloc de la mémoire échoue 
   }
   clust->dendro_tree = NULL ; //ini nos champs 
   clust->nb_leaves = 0; 
   Dict *dict = dictCreate(initial_dict_size); // on crée notre dictionnaire
   if (dict==NULL) // notre alloc échoue
-    return 0;
+  {
+    free(clust); 
+    return NULL; // si l'alloc de la mémoire échoue 
+  }
   while () 
   {
     char *o1 = ; 
     BTree *T1 = btCreate(o1); // T1 est un pointeur vers notre cluster
-    Dict_insert(Dict, o1, T1); // on ini le dictionnaire aussi
+    Dict_insert(dict, o1, T1); // on ini le dictionnaire aussi
   }
       
 }
