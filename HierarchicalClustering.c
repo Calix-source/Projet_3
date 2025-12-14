@@ -51,8 +51,31 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
     Dict_insert(dict, o1, T1); // on ini le dictionnaire aussi
     current_node=llNext(current_node);
   }
+  List *distances = llCreateEmpty(); //pour stocker toutes les paires possibles
+  Node *pointeur1 = llHead(objects);
+  Node *pointeur2 = llNext(objects);
+  while (pointeur1!=taille)
+  {
+    while ( pointeur2 != taille) 
+      
+  }
+  
+  
   
   return clust;   
 }
 
-
+void hclustFree(Hclust *hc)
+{}
+int hclustDepth(Hclust *hc)
+{}
+int hclustNbLeaves(Hclust *hc)
+{}
+void hclustPrintTree(FILE *fp, Hclust *hc)
+{}
+List *hclustGetClustersDist(Hclust *hc, double distanceThreshold)
+{}
+List *hclustGetClustersK(Hclust *hc, int k)
+{}
+BTree *hclustGetTree(Hclust *hc)
+{}
