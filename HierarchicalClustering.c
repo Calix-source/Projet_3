@@ -41,11 +41,13 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
   {
     char *o1 = (char *)llData(current_node); 
     BTree *T1 = btCreate(o1); // T1 est un pointeur vers notre cluster
-    if(T1==NULL) 
+    if(T1==NULL) // on ne veut pas insérer NULL dans notre dict 
     {
+      dictFree(dict);
       free(clust); 
       return NULL; // si l'alloc de la mémoire échoue 
     } 
+    clust->nb_leaves++;
     Dict_insert(dict, o1, T1); // on ini le dictionnaire aussi
     current_node=llNext(current_node);
   }
