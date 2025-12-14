@@ -29,42 +29,28 @@ Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char
   }
   clust->dendro_tree = NULL ; //ini nos champs 
   clust->nb_leaves = 0; 
-  Dict *dict = dictCreate(initial_dict_size); // on crée notre dictionnaire
+  size_t ini_dict_size = llLength(objects) * 2; // on ini une taille 
+  Dict *dict = dictCreate(ini_dict_size); // on crée notre dictionnaire
   if (dict==NULL) // notre alloc échoue
   {
     free(clust); 
     return NULL; // si l'alloc de la mémoire échoue 
   }
-  while () 
+  Node *current_node = llHead(objects); // premier noeud de la liste d'objects 
+  while (current_node!=NULL) 
   {
-    char *o1 = ; 
+    char *o1 = (char *)llData(current_node); 
     BTree *T1 = btCreate(o1); // T1 est un pointeur vers notre cluster
-    Dict_insert(dict, o1, T1); // on ini le dictionnaire aussi
-  }
-      
-}
-
-
-
-/*Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams)
-{
-  //Triple tab []; // ini le tableau qui contient nos o, o' et notre distance
-  Node *current_node = llHead(objects);
-  size_t initial_dict_size = llLength(objects) * 2; // on ini une taille 
-  Dict *dict = dictCreate(initial_dict_size); // on crée notre dictionnaire
-  if (dict == NULL) // notre alloc échoue
-  {
-    return 0;
-  }   
-  while ( current_node!= NULL) 
+    if(T1==NULL) 
     {
-      char *object = (char *)llData(current_node);
-      
-      BTree *T_o = btCreateLeaf(object); 
-      dictInsert(dict, object, T_o);
-      current_node = llNext(current_node);
-    }
+      free(clust); 
+      return NULL; // si l'alloc de la mémoire échoue 
+    } 
+    Dict_insert(dict, o1, T1); // on ini le dictionnaire aussi
+    current_node=llNext(current_node);
+  }
+  
+  return clust;   
 }
-*/
 
 
