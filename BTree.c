@@ -143,7 +143,6 @@ int btIsExternal(BTree *tree, BTNode *n) // indique si le noeud est une feuille 
 
 int btHasLeft(BTree *tree, BTNode *n) // indique si le noeud a sous arbre gauche
 {
-{
   (void)(tree);
   return (n->left != NULL);
 }
@@ -167,15 +166,26 @@ void btMapLeaves(BTree *tree, BTNode *n, void (*f)(void *data, void *fparams), v
     return;
   } 
   if(btIsInternal(tree, n)){ // si n est un noeud interne
-    f(btMapLeaves( tree, btLeft(tree, n), f, fparams)); // recursion sur le sous arbre gauche
-    f(btMapLeaves( tree, btRight(tree, n), f, fparams)); // idem sur le sous arbre droit
+    btMapLeaves( tree, btLeft(tree, n), f, fparams); // recursion sur le sous arbre gauche
+    btMapLeaves( tree, btRight(tree, n), f, fparams); // idem sur le sous arbre droit
     
   }
   
 }
 
-//modifie lefttree en lui donnant une nouvelle reacine avec data, leftree et right tree comme sous-arbre, right tree freed
+//modifie lefttree en lui donnant une nouvelle racine avec data, leftree et right tree comme sous-arbre, right tree freed
 void btMergeTrees(BTree *lefttree, BTree *righttree, void *data)
 {
-
+  BTNode *newnode = createNode(data);
+  newnode->left = lefttree->root;
+  newnode->right = righttree->root;
+  if(lefttree->root != NULL){
+    lefttree->root->parent = newnode;
+  }
+  if(righttree->root != NULL){
+    righttree->root->parent = newnode;
+  }
+  lefttree->root = newnode;
+  lefttree->size = 1 + lefttree->size + righttree->size; // on calcule le nouveau nbr de noeuds
+  btFree(righttree); // on libere righttree
 }
