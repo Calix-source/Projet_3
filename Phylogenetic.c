@@ -1,5 +1,6 @@
 #include "HierarchicalClustering.h"
 #include "Phylogenetic.h"
+#inlude "Dict.h"
 
 #include <string.h>
 #include <math.h>
