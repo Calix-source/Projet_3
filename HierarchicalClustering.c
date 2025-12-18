@@ -32,6 +32,7 @@ static void hclustGetLeaves(BTree *tree, BTNode *n, List *clusterlist);
 int hclustDepthAux(BTree *tree, BTNode *n);
 int hclustDepth(Hclust *hc);
 int hclustNbLeaves(Hclust *hc);
+void printNode(FILE *fp, BTree *tree, BTNode *node, double dist_parent_fus);
 void hclustPrintTree(FILE *fp, Hclust *hc);
 static void GetClustersDistAux(List *clusters, BTree *tree, BTNode *n, double distanceThreshold);
 List *hclustGetClustersDist(Hclust *hc, double distanceThreshold);
@@ -63,7 +64,8 @@ static int compare_distance(void *a, void *b){ // on en a besoin pour trier nos 
 }
 
 
-Hclust *hclustBuildTree(List *objects, double (*distFn)(const char *, const char *, void *), void *distFnParams){
+Hclust *hclustBuildTree(List *obje
+cts, double (*distFn)(const char *, const char *, void *), void *distFnParams){
     if (objects == NULL || llLength(objects) == 0) return NULL;
 
     Hclust *clust = (Hclust *)malloc(sizeof(Hclust)); // alloc mémoire
@@ -219,29 +221,66 @@ int hclustNbLeaves(Hclust *hc){
     }
     return hc->nb_leaves;
 }
-void printNode(FILE *fp, BTNode *node, double dist_parent_fus){
-    /*
-    BTree_t *tree;
+void printNode(FILE *fp, BTree *tree, BTNode *node, double dist_parent_fus){
+    
+   
     double dist_noeud_fus; 
     double length; 
-    if (node->left == NULL && node->right == NULL) // ca veut dire qu'on a une feuille 
+
+    if (btIsExternal(tree, node)) // ca veut dire qu'on a une feuille 
     {
-        dist_noeud_fus =0;
-        length = dist_parent_fus; // calcule la long de la branche
-        char *obj_name = (char*)node->data; 
+        dist_noeud_fus =0.0;
+        length = dist_parent_fus ; // calcule la long de la branche
+        char *obj_name = (char*)btGetData(tree, node); 
+
+        fprintf(fp, "%s:%f", obj_name, length);
     }
         
     else // cas récursif de base pour tous les autres noeuds ( càd s'il est à l'intérieur)
     {
-        dist_noeud_fus = *(double *)node->data;
-        double length = dist_parent_fus - dist_noeud_fus;
+        dist_noeud_fus = *(double *)btGetData(tree, node);
+        length = dist_parent_fus - dist_noeud_fus;
+    
+        fprintf(fp, "(");
+        BTNode *left = btLeft(tree, node);
+        BTNode *right = btRight(tree, node);
+        if(left != NULL){
+            printNode(fp, tree, left, dist_noeud_fus);
+        }
+        fprintf(fp, ",");
+        if(right != NULL){
+            printNode(fp, tree, right, dist_noeud_fus);
+            
+        }
+
+        fprintf(fp, "):%f", length);
+
     }
-    */
+    
    return ; 
 }
-void hclustPrintTree(FILE *fp, Hclust *hc){ //FILE *fp c'est la où on va envoyer la sortie de notre arbre
 
+void hclustPrintTree(FILE *fp, Hclust *hc)
+{
+    if (hc == NULL || hc->dendro_tree == NULL || fp == NULL){
+        return;
+    } 
+    BTNode *root = btRoot(hc->dendro_tree);
+    if (root == NULL){
+        return;
+    }
+    if (btIsExternal(hc->dendro_tree, root)){
+        double dist_root_fus =0.0;
+        printNode(fp,hc->dendro_tree, root, dist_root_fus);
+    
+    }
+    else{
+        double dist_root_fus = *(double*)btGetData(hc->dendro_tree, root);
+        printNode(fp, hc->dendro_tree, root, dist_root_fus);
 
+    }
+    fprintf(fp, ";\n");
+    return;
 }
 
 static void GetClustersDistAux(List *clusters, BTree *tree, BTNode *n, double distanceThreshold){
