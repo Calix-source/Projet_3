@@ -33,11 +33,11 @@ double phyloDNADistance(char *dna1, char *dna2){
                         char c2 = dna2[i];
                         if(c1 != c2) // si les 2 lettres sont différentes
                         {
-                                    if((c1 =='A'&& c2 =="G")|| (c1 =='G' && c2 =='A')||(c1 =='C' && c2 =='T')||(c1 =='T' && c2 =='C')){
-                                                transitions ++:
+                                    if((c1 =='A'&& c2 =='G')|| (c1 =='G' && c2 =='A')||(c1 =='C' && c2 =='T')||(c1 =='T' && c2 =='C')){
+                                                transitions ++;
                                     }
                                     else{
-                                                tansversions ++;
+                                                transversions ++;
                                     }
                         }
             }
