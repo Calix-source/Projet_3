@@ -1,6 +1,7 @@
 #include "HierarchicalClustering.h"
 #include "Phylogenetic.h"
-#inlude "Dict.h"
+#include "Dict.h"
+#include "LinkedList.h"
 
 #include <string.h>
 #include <math.h>
@@ -87,7 +88,6 @@ Hclust *phyloTreeCreate(char *filename){
 
                         llInsertLast(names, objectName);
                         dictInsert(dicfeatures,objectName, dnaSequence);
-                        int pos = 0;
                         i++;
 
                         }
