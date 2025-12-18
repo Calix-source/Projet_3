@@ -177,15 +177,23 @@ void btMapLeaves(BTree *tree, BTNode *n, void (*f)(void *data, void *fparams), v
 void btMergeTrees(BTree *lefttree, BTree *righttree, void *data)
 {
   BTNode *newnode = createNode(data);
-  newnode->left = lefttree->root;
-  newnode->right = righttree->root;
-  if(lefttree->root != NULL){
-    lefttree->root->parent = newnode;
+  BTNode *leftroot = lefttree->root;
+  BTNode *rightroot = righttree->root;
+
+  newnode->left = leftroot;
+  newnode->right = rightroot;
+  
+
+  if(leftroot!= NULL){
+    leftroot->parent = newnode;
   }
-  if(righttree->root != NULL){
-    righttree->root->parent = newnode;
+  if(rightroot != NULL){
+    rightroot->parent = newnode;
   }
   lefttree->root = newnode;
   lefttree->size = 1 + lefttree->size + righttree->size; // on calcule le nouveau nbr de noeuds
-  btFree(righttree); // on libere righttree
+  
+  righttree->root = NULL;  // on detache righttree
+
+  free(righttree); // on libere righttree
 }
