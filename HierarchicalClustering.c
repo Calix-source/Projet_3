@@ -304,7 +304,7 @@ static void GetClustersDistAux(List *clusters, BTree *tree, BTNode *n, double di
     double dist = *distptr;
 
     // si n est un noeud interne
-    if( dist >distanceThreshold){ // la distance entre les clusters est superieure au seuil,
+    if( dist <=distanceThreshold){ // la distance entre les clusters est superieure au seuil,
         List *clusterlist = llCreateEmpty();//
         hclustGetLeaves(tree, n, clusterlist);
         llInsertLast(clusters, clusterlist); //
