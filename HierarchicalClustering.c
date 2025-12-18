@@ -225,9 +225,8 @@ int hclustNbLeaves(Hclust *hc){
     }
     return hc->nb_leaves;
 }
-void printNode(FILE *fp, BTree *tree, BTNode *node, double dist_parent_fus){
+void printNode(FILE *fp, BTree *tree, BTNode *node, double dist_parent_fus, int isRoot){
     
-
    
     double dist_noeud_fus; 
     double length; 
@@ -241,7 +240,7 @@ void printNode(FILE *fp, BTree *tree, BTNode *node, double dist_parent_fus){
         fprintf(fp, "%s:%f", obj_name, length);
     }
         
-    else // cas récursif de base pour tous les autres noeuds ( càd s'il est à l'intérieur)
+    else // cas récursif de base pour tous les autres noeuds internes
     {
         dist_noeud_fus = *(double *)btGetData(tree, node);
         length = dist_parent_fus - dist_noeud_fus;
@@ -250,15 +249,19 @@ void printNode(FILE *fp, BTree *tree, BTNode *node, double dist_parent_fus){
         BTNode *left = btLeft(tree, node);
         BTNode *right = btRight(tree, node);
         if(left != NULL){
-            printNode(fp, tree, left, dist_noeud_fus);
+            printNode(fp, tree, left, dist_noeud_fus, 0);
         }
         fprintf(fp, ",");
         if(right != NULL){
-            printNode(fp, tree, right, dist_noeud_fus);
+            printNode(fp, tree, right, dist_noeud_fus, 0);
             
         }
 
-        fprintf(fp, "):%f", length);
+       if (isRoot) {
+            fprintf(fp, ")"); // pour pas afficher inutilement 0,0000 si le noeud est racine
+        } else {
+            fprintf(fp, "):%f", length);
+        }
 
     }
     
@@ -274,20 +277,16 @@ void hclustPrintTree(FILE *fp, Hclust *hc)
     if (root == NULL){
         return;
     }
-    if (btIsExternal(hc->dendro_tree, root)){
-        double dist_root_fus =0.0;
-        printNode(fp,hc->dendro_tree, root, dist_root_fus);
+    double dist-root_fus = 0.0;
+    if (!btIsExternal(hc->dendro_tree, root)) {
     
+        dist_root_fus = *(double *)btGetData(hc->dendro_tree, root);
     }
-    else{
-        double dist_root_fus = *(double*)btGetData(hc->dendro_tree, root);
-        printNode(fp, hc->dendro_tree, root, dist_root_fus);
 
-    }
+    printNode(fp, hc->dendro_tree, root, dist_root_fus, 1);
     fprintf(fp, ";\n");
     return;
 }
-
 
 static void GetClustersDistAux(List *clusters, BTree *tree, BTNode *n, double distanceThreshold){
 
