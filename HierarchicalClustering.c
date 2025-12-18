@@ -322,8 +322,13 @@ List *hclustGetClustersK(Hclust *hc, int k){ // I do
 }
 
 BTree *hclustGetTree(Hclust *hc){
-    return;
+   if( hc == NULL){
+        return NULL;
+    }
+
+    return hc->dendro_tree; // ca me parait un peu simple lol mais je vois pas quoi faire d'autre...
 }
+    
 
 #endif
 
