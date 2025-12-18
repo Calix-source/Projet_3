@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAXLINELENGTH 2000
+
 static double phyloDistFn(const char *o1, const char *o2, void *params);
 
 
