@@ -201,7 +201,7 @@ int hclustDepthAux(BTree *tree, BTNode *n){
     }
 
     if (btIsExternal(tree, n)){
-        return 1;
+        return 0; // car on veut le nombre d arretes et pas de noeuds
     }
 
     int leftDepth = hclustDepthAux(tree, btLeft(tree, n)); 
