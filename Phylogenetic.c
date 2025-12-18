@@ -4,7 +4,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
-#include <stlib.h>
+#include <stdlib.h>
 
 static double phyloDistFn(const char *o1, const char *o2, void *params);
 
