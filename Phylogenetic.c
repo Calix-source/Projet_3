@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stlib.h>
 
+static double phyloDistFn(const char *o1, const char *o2, void *params);
 
 
 /*
@@ -42,3 +43,58 @@ double phyloDNADistance(char *dna1, char *dna2){
             double dist = (-(0.5*log(1-2*P -Q)) -(0.25)*log(1-2*Q)); 
             return dist;
 }
+
+
+static double phyloDistFn(const char *o1, const char *o2, void *params) {
+    Dict *dict = (Dict *)params;
+    char *s1 = (char *)dictSearch(dict, o1);
+    char *s2 = (char *)dictSearch(dict, o2);
+    return phyloDNADistance(s1, s2);
+}
+
+//Hclust *phyloTreeCreate(char *filename) : renvoie le clustering hiérarchique obtenu à partir des espèces dans le fichier filename
+Hclust *phyloTreeCreate(char *filename){
+
+            char buffer[MAXLINELENGTH];
+            FILE *fp = fopen (filename, "r");
+
+            if (!fgets(buffer, MAXLINELENGTH, fp)){
+                        fprintf(stderr, "phyloTreeCreate: the file is empty.\n");
+                        exit(EXIT_FAILURE);
+            }
+
+            List *names = llCreateEmpty();
+            Dict *dicfeatures = dictCreate(1000);
+
+            while (fgets(buffer, MAXLINELENGTH, fp)){
+            
+                        int lenstr = strlen(buffer) - 1;
+                        buffer[lenstr] = '\0'; // replace \n with \0
+
+                        // Extract species name
+                        int i = 0;
+                        while (buffer[i] != ',')
+                                    i++;
+                        buffer[i] = '\0';
+
+                        char *objectName = malloc((i + 1) * sizeof(char));
+                        char *dnaSequence = malloc((lenstr-i)*sizeof(char));
+                        strcpy(dnaSequence, buffer+i+1);
+                        strcpy(objectName, buffer);
+
+                        llInsertLast(names, objectName);
+                        dictInsert(dicfeatures,objectName, dnaSequence);
+                        int pos = 0;
+                        i++;
+
+                        }
+            
+            Hclust *hc = hclustBuildTree(names, phyloDistFn, dicfeatures);
+
+            dictFreeValues(dicfeatures, free);
+            llFreeData(names);
+            fclose(fp);
+            return hc;
+}
+
+
