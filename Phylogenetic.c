@@ -42,8 +42,8 @@ double phyloDNADistance(char *dna1, char *dna2){
                         }
             }
             // P poproportion de transversions, Q de transition
-            double P = (double) transversions/minlength; 
-            double Q = (double) transitions/minlength;
+            double P = (double) transitions/minlength;
+            double Q = (double) transversions/minlength;
             double dist = (-(0.5*log(1-2*P -Q)) -(0.25)*log(1-2*Q)); 
             return dist;
 }
