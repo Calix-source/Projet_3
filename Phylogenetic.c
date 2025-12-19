@@ -71,16 +71,20 @@ Hclust *phyloTreeCreate(char *filename){
 
             while (fgets(buffer, MAXLINELENGTH, fp)){
             
-                        int lenstr = strlen(buffer) -1;
-                        buffer[lenstr] = '\0'; // replace \n with \0
+                        int lenstr = strlen(buffer);
+                        if(buffer[lenstr] == '\n'){
 
-                        // Extract species name
+                                    buffer[lenstr - 1] = '\0'; // replace \n with \0
+                                    lenstr --;
+
+                        }
+
                         int i = 0;
-                        while (buffer[i] != ',')
+                        while (buffer[i] != ','&& buffer[i] != '\0'){
                                     i++;
+                        }
                         buffer[i] = '\0';
-
-                        int DNAlength = lenstr - i -1;
+                        int DNAlength = lenstr -i-1; 
                         char *objectName = malloc((i + 1) * sizeof(char));
                         char *dnaSequence = malloc((DNAlength + 1)*sizeof(char));
                         strcpy(dnaSequence, buffer+i+1);
@@ -88,7 +92,6 @@ Hclust *phyloTreeCreate(char *filename){
 
                         llInsertLast(names, objectName);
                         dictInsert(dicfeatures,objectName, dnaSequence);
-                        i++;
 
                         }
             
