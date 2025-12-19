@@ -41,7 +41,7 @@ double phyloDNADistance(char *dna1, char *dna2){
                                     }
                         }
             }
-            // P poproportion de transversions, Q de transition
+            // P proportion de transitions, Q de transversions
             double P = (double) transitions/minlength;
             double Q = (double) transversions/minlength;
             double dist = (-(0.5*log(1-2*P -Q)) -(0.25)*log(1-2*Q)); 
@@ -56,7 +56,6 @@ static double phyloDistFn(const char *o1, const char *o2, void *params) {
     return phyloDNADistance(s1, s2);
 }
 
-//Hclust *phyloTreeCreate(char *filename) : renvoie le clustering hiérarchique obtenu à partir des espèces dans le fichier filename
 Hclust *phyloTreeCreate(char *filename){
 
             char buffer[MAXLINELENGTH];
@@ -72,7 +71,7 @@ Hclust *phyloTreeCreate(char *filename){
 
             while (fgets(buffer, MAXLINELENGTH, fp)){
             
-                        int lenstr = strlen(buffer) - 1;
+                        int lenstr = strlen(buffer) -1;
                         buffer[lenstr] = '\0'; // replace \n with \0
 
                         // Extract species name
@@ -81,8 +80,9 @@ Hclust *phyloTreeCreate(char *filename){
                                     i++;
                         buffer[i] = '\0';
 
+                        int DNAlength = lenstr - i -1;
                         char *objectName = malloc((i + 1) * sizeof(char));
-                        char *dnaSequence = malloc((lenstr-i)*sizeof(char));
+                        char *dnaSequence = malloc((DNAlength + 1)*sizeof(char));
                         strcpy(dnaSequence, buffer+i+1);
                         strcpy(objectName, buffer);
 
@@ -99,5 +99,3 @@ Hclust *phyloTreeCreate(char *filename){
             fclose(fp);
             return hc;
 }
-
-
